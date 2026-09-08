@@ -1,6 +1,7 @@
 <?php
-namespace App\model;
-class Pessoas { 
+
+namespace App\Model;
+class Pessoa { 
 
     private ?int $id = null;
     private string $nome;
