@@ -2,7 +2,7 @@
 
 namespace App\DAO;
 
-use App\Models\Pessoa;
+use App\Model\Pessoa;
 use App\Database;
 use App\Utils\Formatter;
 use PDO;
