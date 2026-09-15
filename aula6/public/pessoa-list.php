@@ -26,6 +26,7 @@ $content = '
                 <th>CPF</th>
                 <th>Telefone</th>
                 <th>Endereço</th>
+                <th>Ações</th>
             </tr>
         </thead>
 
@@ -41,6 +42,20 @@ foreach ($pessoas as $pessoa) {
                 <td>' . htmlspecialchars($pessoa['cpf']) . '</td>
                 <td>' . htmlspecialchars($pessoa['telefone'] ?? '') . '</td>
                 <td>' . htmlspecialchars($pessoa['endereco'] ?? '') . '</td>
+
+                <td>
+                    <a href="pessoa-editar.php?id=' . $pessoa['id'] . '"
+                       class="btn btn-warning btn-sm">
+                        Editar
+                    </a>
+
+                    <a href="pessoa-excluir.php?id=' . $pessoa['id'] . '"
+                       class="btn btn-danger btn-sm"
+                       onclick="return confirm(\'Tem certeza que deseja excluir esta pessoa?\')">
+                        Excluir
+                    </a>
+                </td>
+
             </tr>
     ';
 }
@@ -49,7 +64,7 @@ if (count($pessoas) == 0) {
 
     $content .= '
             <tr>
-                <td colspan="5" class="text-center">
+                <td colspan="6" class="text-center">
                     Nenhuma pessoa cadastrada.
                 </td>
             </tr>

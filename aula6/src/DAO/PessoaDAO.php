@@ -43,4 +43,59 @@ class PessoaDAO
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    // PESQUISAR
+    public function pesquisar(string $pesquisa): array
+    {
+        $sql = "SELECT * FROM pessoas
+                WHERE nome LIKE :pesquisa
+                OR cpf LIKE :pesquisa";
+
+        $stmt = $this->conn->prepare($sql);
+
+        $stmt->execute([
+            ':pesquisa' => '%' . $pesquisa . '%'
+        ]);
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    // ALTERAR
+    public function alterar(
+        int $id,
+        string $nome,
+        string $telefone,
+        string $cpf,
+        string $endereco
+    ): bool {
+
+        $sql = "UPDATE pessoas
+                SET nome = :nome,
+                    telefone = :telefone,
+                    cpf = :cpf,
+                    endereco = :endereco
+                WHERE id = :id";
+
+        $stmt = $this->conn->prepare($sql);
+
+        return $stmt->execute([
+            ':id' => $id,
+            ':nome' => $nome,
+            ':telefone' => $telefone,
+            ':cpf' => $cpf,
+            ':endereco' => $endereco
+        ]);
+    }
+
+    // EXCLUIR
+    public function excluir(int $id): bool
+    {
+        $sql = "DELETE FROM pessoas WHERE id = :id";
+
+        $stmt = $this->conn->prepare($sql);
+
+        return $stmt->execute([
+            ':id' => $id
+        ]);
+    }
 }
