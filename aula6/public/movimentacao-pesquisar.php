@@ -8,49 +8,43 @@ $dao = new MovimentacaoDAO();
 
 $pesquisa = $_GET['pesquisa'] ?? '';
 
+$movimentacoes = [];
+
 if ($pesquisa != '') {
     $movimentacoes = $dao->pesquisar($pesquisa);
-} else {
-    $movimentacoes = $dao->listar();
 }
 
 $content = '
 
 <div class="container py-4">
 
-    <h2>Movimentações</h2>
+    <h2>Pesquisar Movimentação</h2>
 
-    <a href="movimentacao-cadastrar.php"
-       class="btn btn-primary mb-3">
+    <form method="GET">
 
-        Nova Movimentação
+        <div class="mb-3">
 
-    </a>
-
-    <form method="GET" class="mb-3">
-
-        <div class="input-group">
+            <label class="form-label">
+                Pesquisar
+            </label>
 
             <input
                 type="text"
                 name="pesquisa"
                 class="form-control"
-                placeholder="Pesquisar pessoa ou tipo..."
+                placeholder="Digite o nome da pessoa ou tipo..."
                 value="' . htmlspecialchars($pesquisa) . '"
             >
 
-            <button type="submit" class="btn btn-primary">
-                Pesquisar
-            </button>
-
-            <a href="movimentacao-list.php"
-               class="btn btn-secondary">
-                Limpar
-            </a>
-
         </div>
 
+        <button type="submit" class="btn btn-primary">
+            Pesquisar
+        </button>
+
     </form>
+
+    <br>
 
     <table class="table table-bordered">
 
@@ -73,19 +67,14 @@ $content = '
 foreach ($movimentacoes as $movimentacao) {
 
     $content .= '
+
             <tr>
 
-                <td>
-                    ' . htmlspecialchars($movimentacao['id']) . '
-                </td>
+                <td>' . htmlspecialchars($movimentacao['id']) . '</td>
 
-                <td>
-                    ' . htmlspecialchars($movimentacao['pessoa']) . '
-                </td>
+                <td>' . htmlspecialchars($movimentacao['pessoa']) . '</td>
 
-                <td>
-                    ' . htmlspecialchars($movimentacao['tipo']) . '
-                </td>
+                <td>' . htmlspecialchars($movimentacao['tipo']) . '</td>
 
                 <td>
                     R$ ' . number_format(
@@ -109,21 +98,24 @@ foreach ($movimentacoes as $movimentacao) {
                 </td>
 
             </tr>
+
     ';
 }
 
-if (count($movimentacoes) == 0) {
+if ($pesquisa != '' && count($movimentacoes) == 0) {
 
     $content .= '
-            <tr>
 
-                <td colspan="6" class="text-center">
+        <tr>
 
-                    Nenhuma movimentação encontrada.
+            <td colspan="6" class="text-center">
 
-                </td>
+                Nenhuma movimentação encontrada.
 
-            </tr>
+            </td>
+
+        </tr>
+
     ';
 }
 

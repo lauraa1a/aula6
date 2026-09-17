@@ -61,4 +61,32 @@ class MovimentacaoDAO
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    // PESQUISAR
+    public function pesquisar(string $pesquisa): array
+    {
+        $sql = "SELECT
+                    m.id,
+                    m.tipo,
+                    m.valor,
+                    m.createdAt,
+                    p.nome AS pessoa,
+                    pd.nome AS pessoa_destino
+                FROM movimentacoes m
+                INNER JOIN pessoas p
+                    ON p.id = m.pessoa_id
+                LEFT JOIN pessoas pd
+                    ON pd.id = m.pessoa_destino_id
+                WHERE p.nome LIKE :pesquisa
+                   OR m.tipo LIKE :pesquisa
+                ORDER BY m.id DESC";
+
+        $stmt = $this->conn->prepare($sql);
+
+        $stmt->execute([
+            ':pesquisa' => '%' . $pesquisa . '%'
+        ]);
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
